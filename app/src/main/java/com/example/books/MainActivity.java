@@ -92,16 +92,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         @Override
         protected void onPostExecute(String result) {
-//
-//            if (result == null){
-//
-//            }else{
-//
-//            }
-//
-            ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
-           BooksAdapter adapter = new BooksAdapter(books);
-           rvBooks.setAdapter(adapter);
+
+            if (result == null){
+                Log.e("Error", "Unable to load books");
+            }else{
+                ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
+                BooksAdapter adapter = new BooksAdapter(books);
+                rvBooks.setAdapter(adapter);
+            }
+
+
 
         }
     }

@@ -2,22 +2,25 @@ package com.example.books;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 public class Book implements Parcelable {
     public String id;
     public String title;
     public String subTitle;
-    public String[] authors;
+    public String authors;
     public String publisher;
     public String publishedDate;
+    public String description;
 
-    public Book(String id, String title, String subTitle, String[] authors, String publisher, String publishedDate){
+    public Book(String id, String title, String subTitle, String[] authors, String publisher, String publishedDate, String description){
         this.id = id;
         this.title = title;
         this.subTitle = subTitle;
-        this.authors = authors;
+        this.authors = TextUtils.join(", " , authors);
         this.publisher = publisher;
         this.publishedDate = publishedDate;
+        this.description = description;
     }
 
     //parceable implementation
@@ -25,9 +28,10 @@ public class Book implements Parcelable {
         id = in.readString();
         title = in.readString();
         subTitle = in.readString();
-        authors = in.createStringArray();
+        authors = in.readString();
         publisher = in.readString();
         publishedDate = in.readString();
+        description = in.readString();
     }
 
     public static final Creator<Book> CREATOR = new Creator<Book>() {
@@ -62,10 +66,13 @@ public class Book implements Parcelable {
         return title;
     }
 
-    public String[] getAuthors() {
+    public String getAuthors() {
         return authors;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
     @Override
     public int describeContents() {
@@ -77,8 +84,9 @@ public class Book implements Parcelable {
         dest.writeString(id);
         dest.writeString(title);
         dest.writeString(subTitle);
-        dest.writeStringArray(authors);
+        dest.writeString(authors);
         dest.writeString(publisher);
         dest.writeString(publishedDate);
+        dest.writeString(description);
     }
 }
