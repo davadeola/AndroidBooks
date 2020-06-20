@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="0dp"
     tools:context=".BookDetail">
 
     <ImageView
@@ -25,7 +25,7 @@
         android:layout_height="226dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSubtitle"
-        app:srcCompat="@drawable/book_open" />
+        android:imageUrl="@{Book.thumbnail}" />
 
     <TextView
         android:id="@+id/tvTitle"
