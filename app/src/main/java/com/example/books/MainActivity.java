@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //            }else{
 //
 //            }
-
+//
             ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
            BooksAdapter adapter = new BooksAdapter(books);
            rvBooks.setAdapter(adapter);
