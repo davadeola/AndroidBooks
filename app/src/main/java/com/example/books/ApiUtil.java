@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -24,6 +25,10 @@ public class ApiUtil {
     public static final String QUERY_PARAMETER_KEY = "q";
     public static final String KEY = "key";
     public static final String API_KEY = "AIzaSyCd3y5bmHLJHAQOQJaTafE3pnsCbTNb2f8";
+    public static final String TITLE = "intitle:";
+    public static final String AUTHOR = "inauthor:";
+    public static final String PUBLISHER = "inpublisher:";
+    public static final String ISBN = "isbn:";
 
     public static URL buildUrl(String title){
 
@@ -44,6 +49,34 @@ public class ApiUtil {
         }
 
         return url;
+    }
+
+    public static URL buildUrl(String title, String author, String publisher, String isbn){
+        URL url = null;
+        StringBuilder sb = new StringBuilder();
+        if(!title.isEmpty()) sb.append(TITLE + title + "+");
+        if(!author.isEmpty()) sb.append(AUTHOR + author + "+");
+        if(!publisher.isEmpty()) sb.append(PUBLISHER + publisher + "+");
+        if(!isbn.isEmpty()) sb.append(ISBN + isbn + "+");
+
+        //removes the last + in the query
+        sb.setLength(sb.length() -1);
+
+        String query = sb.toString();
+
+        Uri uri = Uri.parse(BASE_API_URL).buildUpon()
+                .appendQueryParameter(QUERY_PARAMETER_KEY, query)
+                .build();
+
+        try {
+            url = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("URL TAKEN:", url.toString());
+        return url;
+
     }
 
     public static String getJson(URL url) throws IOException {

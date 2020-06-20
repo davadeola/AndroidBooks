@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Books</string>
     <string name="search">Search</string>
+    <string name="insert_title">Insert Title</string>
+    <string name="insert_author">Insert author</string>
+    <string name="insert_publisher">Insert publisher</string>
+    <string name="insert_isbn">insert isbn</string>
+    <string name="advanced_search">Advanced Search</string>
 </resources>

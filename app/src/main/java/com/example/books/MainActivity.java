@@ -1,11 +1,13 @@
 package com.example.books;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,12 +35,23 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         LinearLayoutManager booksLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvBooks.setLayoutManager(booksLayoutManager);
 
+        //Getting data from Search Activity
+        Intent intent = getIntent();
+        String query = intent.getStringExtra("Query");
+        URL bookUrl = null;
         try {
-            URL bookUrl = ApiUtil.buildUrl("cooking");
+            if (query== null || query.isEmpty()){
+                 bookUrl = ApiUtil.buildUrl("cooking");
+            }else{
+                bookUrl = new URL(query);
+            }
+
+
             new BookQueryTask().execute(bookUrl);
         }catch (Exception e){
             Log.d("Error", e.toString());
         }
+
     }
 
 
@@ -49,6 +62,22 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_advanced_searrch:
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
     }
 
     @Override
@@ -95,12 +124,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
             if (result == null){
                 Log.e("Error", "Unable to load books");
-            }else{
-                ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
-                BooksAdapter adapter = new BooksAdapter(books);
-                rvBooks.setAdapter(adapter);
             }
-
+            ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
+            BooksAdapter adapter = new BooksAdapter(books);
+            rvBooks.setAdapter(adapter);
 
 
         }
